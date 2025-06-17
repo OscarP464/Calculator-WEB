@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    
+    <table border="1">
+    <tr>
+        <td colspan="5">
+            <input type="text" id="inputBox" value="0">
+        </td>
+    </tr>
+    <tr>
+    <td class="operatorbutton" onclick="operatorBtn('sin')">sin</td>
+    <td class="operatorbutton" onclick="operatorBtn('cos')">cos</td>
+    <td class="operatorbutton" onclick="operatorBtn('tan')">tan</td>
+    <td class="operatorbutton" onclick="operatorBtn('log')">log</td>
+    <td class="newbuttons" onclick="deleteLast('Del')">Del</td>
+    <td colspan="2"></td>
+</tr>
+    <tr>
+        <td class="digitbutton" onclick="numberBtn(7)">7</td>
+        <td class="digitbutton" onclick="numberBtn(8)">8</td>
+        <td class="digitbutton" onclick="numberBtn(9)">9</td>
+        <td class="operatorbutton" onclick="operatorBtn('*')">x</td>
+        <td class="newbuttons" onclick="operatorBtn('π')">π</td>
+
+    </tr>
+    <tr>
+        <td class="digitbutton" onclick="numberBtn(4)">4</td>
+        <td class="digitbutton" onclick="numberBtn(5)">5</td>
+        <td class="digitbutton" onclick="numberBtn(6)">6</td>
+        <td class="operatorbutton" onclick="operatorBtn('-')">-</td>
+        <td class="newbuttons" onclick="operatorBtn('√')">√</td>
+        
+
+    </tr>
+    <tr>
+        <td class="digitbutton" onclick="numberBtn(1)">1</td>
+        <td class="digitbutton" onclick="numberBtn(2)">2</td>
+        <td class="digitbutton" onclick="numberBtn(3)">3</td>
+        <td  class="operatorbutton" onclick="operatorBtn('+')">+</td>
+        <td class="newbuttons" onclick="calculate('%')">%</td>
+    </tr>
+    <tr>
+        <td class="digitbutton" colspan="2" onclick="numberBtn(0)">0</td>
+        <td class="ACbutton" onclick="clearInput()">AC</td>
+        <td class="operatorbutton" onclick="operatorBtn('/')">/</td>
+       <td class="newbuttons" onclick="toggleRad()">(RAD)</td>
+        
+    </tr>
+<tr>
+        <td class="operatorbutton" colspan="4" onclick="calculate('=')">=</td>
+        <td class="newbuttons" onclick="calculate('ans')">Ans</td>
+    </tr>
+        
+    </table>
+    <script>
+        var newline = true;
+        var value1= null;
+        var operator = null;
+        var isRadian = false;
+        // Function to handle number buttons
+        function numberBtn(button) {
+            if (newline) {
+                document.getElementById("inputBox").value = "";
+                newline = false;
+            }
+            // If the input box is empty, set it to the button value
+            var currentValue = document.getElementById("inputBox").value;
+            document.getElementById("inputBox").value =currentValue + button;
+            }
+    // Function to clear the input box
+            function clearInput() {
+        document.getElementById("inputBox").value = "0";
+        newline = true;
+    }
+    // Function to handle operator buttons
+     function operatorBtn(op) {
+        value1 = parseInt(document.getElementById("inputBox").value);
+        operator = op;
+        newline = true;
+     }
+      // Function to handle square root operation
+     function squareRoot() {
+    var value = parseInt(document.getElementById("inputBox").value);
+    if (value < 0) {
+        document.getElementById("inputBox").value = "Error";
+    } else {
+        document.getElementById("inputBox").value = Math.sqrt(value);
+    }
+    newline = true;
+}
+
+    
+     // Function to handle the calculation
+        function calculate() {
+            var value2 = parseInt(document.getElementById("inputBox").value);
+            var result;
+            switch (operator) {
+                case '+':
+                    result = value1 + value2;
+                    break;
+                case '-':
+                    result = value1 - value2;
+                    break;
+                case '*':
+                    result = value1 * value2;
+                    break;
+                case '/':
+                    result = value1 / value2;
+                    break;
+                    case '√':
+        // Square root of value2 (or value1, depending on your logic)
+        if (value1 < 0) {
+            result = "Error";
+        } else {
+            result = Math.sqrt(value1);
+        }
+                    break;
+                    case 'π':
+        result = Math.PI;
+                    break;
+                    case '%':
+        result = value1 / 100;
+        break;
+          case 'sin':
+    result = isRadian ? Math.sin(value1) : Math.sin(value1 * Math.PI / 180);
+    break;
+case 'cos':
+    result = isRadian ? Math.cos(value1) : Math.cos(value1 * Math.PI / 180);
+    break;
+case 'tan':
+    result = isRadian ? Math.tan(value1) : Math.tan(value1 * Math.PI / 180);
+    break;
+        // Logarithm base 10
+        case 'log':
+        if (value1 <= 0) {
+            result = "Error";
+        } else {
+            result = Math.log10(value1);
+        }
+        break;
+                default:
+                    result = "Error";
+            }
+            // Display the result in the input box
+            document.getElementById("inputBox").value = result;
+            newline = true;
+        }
+        function toggleRad() {
+    isRadian = !isRadian;
+    // Optionally update the button text to show current mode
+    var radBtn = document.querySelector("td[onclick*='calculate(\"RAD\")']");
+    if (radBtn) {
+        radBtn.textContent = isRadian ? "(DEG)" : "(RAD)";
+    }
+}
+        // Function to handle delete operation
+        function deleteLast() {
+    var current = document.getElementById("inputBox").value;
+    document.getElementById("inputBox").value = current.slice(0, -1) || "0";
+}
+        // Add event listeners to the buttons
+        //document.querySelector('td[colspan="4"]').addEventListener('click', calculate);
+        
+    </script>
+</body>
+</html>
